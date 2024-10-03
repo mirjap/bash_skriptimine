@@ -1,1 +1,25 @@
- 
+#!/bin/bash
+
+#loeb sisestatud kasutajanime ning teeb selle põhjal kasutaja ja /home kataloogi(vajalike peidetud failidega)
+
+echo -n "Sisestage kasutajanimi kasutajale, mida soovite luua:"
+read nimi
+
+if (( $# -ne 1 )); then
+echo "Kasutusjuhend: $0 kasutajanimi"
+else
+nimi=$1
+useradd $nimi -m -s /bin/bash
+tulemus=$?
+
+if (( $tulemus -eq 0 )); then
+echo "Kasutaja nimega $nimi on tehtud"
+cat /etc/passwd | grep $nimi
+ls -la /home/$nimi
+
+else
+echo "Probleem kasutaja $nimi lisamine"
+echo "probleemi kood on $tulemus"
+fi
+
+fi
