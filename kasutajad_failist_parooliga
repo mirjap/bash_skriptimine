@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#võtab failinime ning teeb iga rea failist parooliga kasutajaks kasutades lisa_kasutaja faili
+
+#kui faili sisu ei ole meile sobilik
+if [ $# -ne 1 ];then
+echo "Ei ole sobilik"
+
+#muidu tegele edasi
+else
+fail=$1
+
+#kõik on korras
+if [ -f $fail -a -r $fail ]; then
+echo "Fail on sobiv"
+
+for read in $(cat $fail)
+do
+nimi=$(echo "$read" | cut -f1 -d:)
+sh lisa_kasutaja $nimi
+echo "$read" | sudo chpasswd
+done
+
+#miski läks katki
+else
+echo "Probleem failiga $fail"
+fi
+fi
