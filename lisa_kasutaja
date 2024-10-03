@@ -5,21 +5,19 @@
 echo -n "Sisestage kasutajanimi kasutajale, mida soovite luua:"
 read nimi
 
-if (( $# -ne 1 )); then
-echo "Kasutusjuhend: $0 kasutajanimi"
-else
-nimi=$1
-useradd $nimi -m -s /bin/bash
+#teeb kasutaja
+sudo useradd $nimi -m -s /bin/bash
 tulemus=$?
 
-if (( $tulemus -eq 0 )); then
+#kui kõik on korras
+if [ $tulemus -eq 0 ]; then
 echo "Kasutaja nimega $nimi on tehtud"
 cat /etc/passwd | grep $nimi
 ls -la /home/$nimi
 
+#kui on probleeme
 else
-echo "Probleem kasutaja $nimi lisamine"
+echo "Probleem kasutaja $nimi lisamisel"
 echo "probleemi kood on $tulemus"
 fi
 
-fi
