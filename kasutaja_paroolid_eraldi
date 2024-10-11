@@ -4,6 +4,7 @@
 
 if [ $# -ne 2 ]; then
 echo "Antud sisendite kogus pole sobilik"
+fi
 
 #kas on loetav
 if [ -r  "$1" ]; then
@@ -21,17 +22,17 @@ if [ -r  "$1" ]; then
 			cat /etc/passwd | grep $user
 			ls -la /home/$user
 
-			grep "$kasutajad" $2 | sudo chpasswd
+			#paneme talle parooli
+			grep $user $2 | sudo chpasswd
 			echo "Kasutajale $user on lisatud parool"
-			grep "$kasutaja" /etc/shadow
-
-		#kui on katki
+			grep "$user" /etc/shadow
+		#Kui ta ei tööta
 		else
 			echo "Kasutaja loomisega tekkis probleeme"
 
 		fi
 		done
-	#Fail pole päris :(
+	#Faili ei leitud
 	else
 	echo "Fail '$2' pole lubatud"
 	fi
@@ -39,4 +40,3 @@ else
 echo "Fail '$1' pole lubatud"
 fi
 
-fi
