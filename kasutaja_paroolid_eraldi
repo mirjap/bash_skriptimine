@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#võtab kaks failinime ning võta ühest parooli teisest kasutajanime ning teeb nende põhjal kasutaja
+
+if [ $# -ne 2 ]; then
+echo "Antud sisendite kogus pole sobilik"
+
+#kas on loetav
+if [ -r  "$1" ]; then
+	#kas teine on ka loetav
+	if [ -r "$2" ]; then
+		for user in $(cat "$1")
+		do
+		#teeme kasutajad
+		sudo useradd $user -m -s /bin/bash
+		tulemus=$?
+
+		#kas kõik töötab
+		if [ $tulemus -eq 0 ]; then
+			echo "Kasutaja $user on tehtud"
+			cat /etc/passwd | grep $user
+			ls -la /home/$user
+
+			grep "$kasutajad" $2 | sudo chpasswd
+			echo "Kasutajale $user on lisatud parool"
+			grep "$kasutaja" /etc/shadow
+
+		#kui on katki
+		else
+			echo "Kasutaja loomisega tekkis probleeme"
+
+		fi
+		done
+	#Fail pole päris :(
+	else
+	echo "Fail '$2' pole lubatud"
+	fi
+else
+echo "Fail '$1' pole lubatud"
+fi
+
+fi
