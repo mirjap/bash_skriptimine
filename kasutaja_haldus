@@ -6,6 +6,13 @@
 echo -n "Sisestage kasutaja nimi, mida soovite lisada: "
 read user
 
+#kui sisend on klahv x, peata skript
+if [ $user = "x" ]; then
+exit
+
+
+#kui sisend on miski muu lähme edasi
+else
 echo -n "Sisestage grupp kuhu soovite kasutaja lisada (opetajad, opilased): "
 read group
 
@@ -28,6 +35,7 @@ if [ $group = "opetajad" ] || [ $group = "opilased" ]; then
 		echo "$user:$pass" >> sudo chpasswd
 
 		echo "kasutaja: $user, parool: $pass, grupp: $group, kodukataloog: /home/$user"
+	#kasutajanimi ei sobi
 	else
 	"Kasutaja loomisega ilmnes probleeme"
 	fi
@@ -36,3 +44,9 @@ else
 echo "Valige üks kahest lubatud grupist"
 
 fi
+
+#käivitame skripti uuesti
+echo "Peatamiseks vajutage x-klahvi"
+./kasutaja_haldus
+fi
+
