@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#skript võtab kasutajanimedest koosneva faili ning genereerib sellele parooli
+#siis salvestab selle kasutajanime ja parooli logifaili
+
+
+if [ $(whoami) = "root" ]
+then
+        #Kas midagi üldse sisestati?
+        if [ $# -eq 0 ]; then
+                echo "Tekkis viga sisendi lugemisel"
+                exit 1
+
+        fi
+
+        #Kas fail on korras
+        if [ -r "$1" ]; then
+                #Loeme faili
+                for user in $(cat "$1")
+                do
+                        #Loome kasutaja
+                        sudo useradd $user -m -s /bin/bash
+                        tulemus=$?
+
+                        #Väljund ok?
+                        if [ $tulemus -eq 0 ]; then
+                                echo "Kasutaja $user on loodud"
+                                cat /etc/passwd | grep $user
+                                ls -la /home/$user
+
+                                #Genereerib parooli
+                                pass=$(pwgen -s 8 -1)
+                                echo "$user:$pass" | sudo chpasswd
+
+                                #Salvestame logifaili
+                                echo "$user:$pass" >> gen_kasutajad_passidega
+
+                                #Kõik korras
+				echo "Kasutajale $user on lisatud parool ja info on salvestatud logifaili"
+				sudo grep $user /etc/shadow
+                        else
+			echo "Tekkis probleem kasutaja $user loomisel"
+                        fi
+                done
+        else
+                #Faili pole
+		echo "Tekkis probleem faili avamisel"
+        fi
+else
+echo "Skripti käivitamiseks logige sisse kasutajasse root"
+fi
