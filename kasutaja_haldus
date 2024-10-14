@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#Skript küsib kasutajale nime ja gruppi kuhu kasutaja lisada
+#teeb kasutaja, lisab selle gruppi ja määrab sellele parooli
+
+echo -n "Sisestage kasutaja nimi, mida soovite lisada: "
+read user
+
+echo -n "Sisestage grupp kuhu soovite kasutaja lisada (opetajad, opilased): "
+read group
+
+#kui grupp sisestati lubatud parameetrites, teeb kasutaja
+if [ $group = "opetajad" ] || [ $group = "opilased" ]; then
+	sudo useradd $user -m -s /bin/bash
+	result=$?
+
+	#kui kasutaja loomine läks hästi, teeme kodukataloogi
+	if [ $result -eq 0 ]; then
+		echo "Kasutaja $user on loodud"
+		cat /etc/passwd | grep $user
+		ls -la /home/$user
+
+		#lisame kasutaja gruppi
+		sudo usermod -aG $group $user
+
+		#lisame kasutajale parooli
+		pass=$(pwgen -s 8 -1)
+		echo "$user:$pass" >> sudo chpasswd
+
+		echo "kasutaja: $user, parool: $pass, grupp: $group, kodukataloog: /home/$user"
+	else
+	"Kasutaja loomisega ilmnes probleeme"
+	fi
+
+else
+echo "Valige üks kahest lubatud grupist"
+
+fi
