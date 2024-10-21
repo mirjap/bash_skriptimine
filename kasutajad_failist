@@ -4,7 +4,7 @@
 
 #kontrollime, kas sisend sobib
 if [ $# -ne 1 ];then
-echo "Ebasobilik sisend, Sisestada kujul 'sh kasutajad_failist_muudetud #fail_kasutajatega'"
+echo "Ebasobilik sisend, Sisestada kujul 'sh kasutajad_failist #fail_kasutajatega'"
 
 else
 fail=$1
