@@ -8,7 +8,7 @@ if [ $(whoami) = "root" ]
 then
         #Kas midagi üldse sisestati?
         if [ $# -eq 0 ]; then
-                echo "Tekkis viga sisendi lugemisel"
+                echo "Tekkis viga sisendi lugemisel, sisestage käsk kujul 'sh passgen £fail_kasutajatega'"
                 exit 1
 
         fi
