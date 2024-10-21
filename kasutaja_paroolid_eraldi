@@ -3,41 +3,45 @@
 #võtab kaks failinime ning võta ühest parooli teisest kasutajanime ning teeb nende põhjal kasutaja
 
 if [ $# -ne 2 ]; then
-echo "Antud sisendite kogus pole sobilik"
+echo "Antud sisendite kogus pole sobilik, sisestage käsk kujul: 'sh kasutaja_paroolid_eraldi #fail_kasutajanimedega £fail_paroolidega'"
 fi
+
 
 #kas esimene fail on loetav
 if [ -r  "$1" ]; then
-	#kas teine fail on ka loetav
-	if [ -r "$2" ]; then
-		for user in $(cat "$1")
-		do
-		#teeme kasutajad
-		sudo useradd $user -m -s /bin/bash
-		tulemus=$?
+        #kas teine fail on ka loetav
+        if [ -r "$2" ]; then
+                for user in $(cat "$1")
+                do
+                #teeme kasutajad
+                sudo useradd $user -m -s /bin/bash
+                tulemus=$?
 
-		#kas kõik töötab
-		if [ $tulemus -eq 0 ]; then
-			echo "Kasutaja $user on tehtud"
-			cat /etc/passwd | grep $user
-			ls -la /home/$user
+                #kas kõik töötab
+                if [ $tulemus -eq 0 ]; then
+                        echo "Kasutaja $user on tehtud"
+                        cat /etc/passwd | grep $user
+                        ls -la /home/$user
 
-			#paneme talle parooli
-			pass=$(cat "$1")
-			echo "$user:$pass" | sudo chpasswd
-			echo "Kasutajale $user on lisatud parool"
-			sudo grep "$user" /etc/shadow
-		#Kui ta ei tööta
-		else
-			echo "Kasutaja loomisega tekkis probleeme"
+                        #paneme talle parooli
+                        pass=$(cat "$1")
+                        echo grep $user $2 | sudo chpasswd
+                        echo "Kasutajale $user on lisatud parool"
+                        sudo grep "$user" /etc/shadow
+                #Kui ta ei tööta
+                else
+                        echo "Kasutaja loomisega tekkis probleeme"
 
-		fi
-		done
-	#Faili ei leitud
-	else
-	echo "Fail '$2' pole lubatud"
-	fi
+                fi
+                done
+        #Faili ei leitud
+        else
+        echo "Fail '$2' pole lubatud"
+        fi
 else
 echo "Fail '$1' pole lubatud"
 fi
+
+
+
 
