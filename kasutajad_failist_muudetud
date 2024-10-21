@@ -2,15 +2,18 @@
 
 #võtab failinime ning teeb iga rea failist kasutajaks kasutades lisa_kasutaja faili
 
+#kontrollime, kas sisend sobib
 if [ $# -ne 1 ];then
-echo "ei"
+echo "Ebasobilik sisend"
 
 else
 fail=$1
 
+#kontrollime kas fail on korras
 if [ -f $fail -a -r $fail ]; then
 echo "Fail on korras"
 
+#teeme iga rea kohta kasutaja
 for nimi in $(cat $fail)
 do
 sh lisa_kasutaja $nimi
