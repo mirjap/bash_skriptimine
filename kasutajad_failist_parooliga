@@ -4,7 +4,7 @@
 
 #kui faili sisu ei ole meile sobilik
 if [ $# -ne 1 ];then
-echo "Ei ole sobilik"
+echo "Ei ole sobilik sisend, sisestage käsk kujul kasutajad_failist_parooliga #fail_andmetega_kujul(kasutaja:parool)'"
 
 #muidu tegele edasi
 else
