@@ -6,7 +6,7 @@ if [ $# -ne 2 ]; then
 echo "Antud sisendite kogus pole sobilik, sisestage käsk kujul: 'sh kasutaja_paroolid_eraldi #fail_kasutajanimedega £fail_paroolidega'"
 fi
 
-
+rida=1
 #kas esimene fail on loetav
 if [ -r  "$1" ]; then
         #kas teine fail on ka loetav
@@ -24,17 +24,17 @@ if [ -r  "$1" ]; then
                         ls -la /home/$user
 
                         #paneme talle parooli
-                        for pass in $(cat "$2")
-			do
-                        echo grep $user $pass | sudo chpasswd
+                        pass=$(sed -n "${rida}p" "$2")
+                        echo $user:$pass | sudo chpasswd
                         echo "Kasutajale $user on lisatud parool"
                         sudo grep "$user" /etc/shadow
-			done
+
                 #Kui ta ei tööta
                 else
                         echo "Kasutaja loomisega tekkis probleeme"
 
                 fi
+		rida=$((rida + 1))
                 done
         #Faili ei leitud
         else
