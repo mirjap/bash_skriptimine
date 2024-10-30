@@ -24,10 +24,12 @@ if [ -r  "$1" ]; then
                         ls -la /home/$user
 
                         #paneme talle parooli
-                        pass=$(cat "$1")
-                        echo grep $user $2 | sudo chpasswd
+                        for pass in $(cat "$2")
+			do
+                        echo grep $user $pass | sudo chpasswd
                         echo "Kasutajale $user on lisatud parool"
                         sudo grep "$user" /etc/shadow
+			done
                 #Kui ta ei tööta
                 else
                         echo "Kasutaja loomisega tekkis probleeme"
